@@ -1,11 +1,13 @@
 require "./phone_number.rb"
+require "./address.rb"
 
 class Contact
   attr_writer :first_name, :middle_name, :last_name
-  attr_reader :phone_numbers
+  attr_reader :phone_numbers, :addresses
 
   def initialize
     @phone_numbers = []
+    @addresses = []
   end
 
   def add_phone_number(kind, number)
@@ -13,6 +15,17 @@ class Contact
     phone_number.kind = kind
     phone_number.number = number
     phone_numbers.push(phone_number)
+  end
+
+  def add_address(kind, street_1, street_2, city, state, postal_code)
+    address = Address.new
+    address.kind = kind
+    address.street_1 = street_1
+    address.street_2 = street_2
+    address.city = city
+    address.state = state
+    address.postal_code = postal_code
+    addresses.push(address)
   end
 
   def first_name
@@ -73,16 +86,21 @@ class Contact
     puts "Phone Numbers"
     phone_numbers.each { |phone_number| puts phone_number }
   end
+
+  def print_addresses
+    puts "Addresses"
+    addresses.each { |address| puts address.to_s('short')}
+  end
 end
 
 spencer = Contact.new
 spencer.first_name = "Spencer"
 spencer.middle_name = "Larry"
 spencer.last_name = "Horn"
-spencer.add_phone_number("Home", "919-274-8072")
-spencer.add_phone_number("Work", "919-274-8073")
+spencer.add_phone_number("Home", "123-123-1234")
+spencer.add_phone_number("Work", "123-123-4321")
+spencer.add_address("Home", "2610 test dr", "", "Durham", "NC", "27701")
 
-puts spencer.to_s
-puts spencer.to_s('first_last')
-puts spencer.to_s('last_first')
+puts spencer.to_s('full_name')
 spencer.print_phone_numbers
+spencer.print_addresses
